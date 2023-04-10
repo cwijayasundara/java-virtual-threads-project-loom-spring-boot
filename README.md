@@ -6,3 +6,20 @@ Virtual threads typically employ a small set of platform threads used as carrier
 
 Virtual threads do not have a thread name by default. The getName method returns the empty string if a thread name is not set.
 
+Some stats as follows
+
+2023-04-10T21:36:34.376+01:00  INFO 529 --- [           main] c.c.v.VirtualThreadsApplication          : Inside VirtualThreadsApplication.publishToRedisUsingSeparateVirtualThreads()
+2023-04-10T21:36:34.376+01:00  INFO 529 --- [           main] c.c.v.tradeservice.TradeService          : Inside TradeService.publishTradesUsingSeparateVirtualThreads()
+2023-04-10T21:36:34.619+01:00  INFO 529 --- [           main] c.c.v.VirtualThreadsApplication          : Time taken to persist 100000 trades is 0.0485310084 seconds
+2023-04-10T21:38:36.641+01:00  INFO 529 --- [           main] c.c.v.VirtualThreadsApplication          : Trade List in Redis is 99999
+2023-04-10T21:38:36.849+01:00  INFO 529 --- [           main] c.c.v.VirtualThreadsApplication          : Inside VirtualThreadsApplication.publishToRedisByUsingVirtualExecutor()
+2023-04-10T21:38:36.849+01:00  INFO 529 --- [           main] c.c.v.tradeservice.TradeService          : Inside TradeService.publishTradesUsingVirtualExecutor()
+2023-04-10T21:38:36.850+01:00  INFO 529 --- [           main] c.c.v.VirtualThreadsApplication          : Time taken to save 100000 trades is 1.358E-4 seconds
+2023-04-10T21:40:36.852+01:00  INFO 529 --- [           main] c.c.v.VirtualThreadsApplication          : Trade List in Redis is 97419
+2023-04-10T21:40:36.952+01:00  INFO 529 --- [           main] c.c.v.VirtualThreadsApplication          : Inside VirtualThreadsApplication.saveTradesUsingPlainSpring()
+2023-04-10T21:40:36.952+01:00  INFO 529 --- [           main] c.c.v.tradeservice.TradeService          : Inside TradeService.publishTradesUsingPlainSpring()
+2023-04-10T21:42:36.026+01:00  INFO 529 --- [           main] c.c.v.VirtualThreadsApplication          : Time taken to save 100000 trades is 23.8146474416 seconds
+2023-04-10T21:44:37.035+01:00  INFO 529 --- [           main] c.c.v.VirtualThreadsApplication          : Trade List in Redis is 99999
+
+Looks like Executors.newVirtualThreadPerTaskExecutor() returns the fastest and the work is being done async using Virtual threads. I ran the test in a Mac with M1 chip.
+
